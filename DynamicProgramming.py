@@ -33,7 +33,7 @@ def find_zero(state):
             if state[r][c] == 0:
                 return r, c
 
-# ---------- GAMEPLAY ----------
+# GAMEPLAY
 
 def move_user(self, r, c):
 zr, zc = find_zero(self.user_state)
@@ -63,3 +63,9 @@ self.user_steps = 0
 self.ai_steps = 0
 self.update_boards()
 
+# ---------- DP MACHINE ----------
+
+def solve_ai(self):
+self.ai_steps = 0
+path = solve_with_dp(deepcopy(self.ai_state))
+self.animate_ai(path, 0)
