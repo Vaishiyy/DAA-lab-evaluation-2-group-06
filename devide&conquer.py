@@ -6,11 +6,11 @@ import random
 import os
 from collections import deque
 
-# ------------------ PATH SETUP ------------------
+# PATH SETUP
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# ------------------ CONSTANTS ------------------
+# CONSTANTS 
 
 TILE = 160
 BOARD_SIZE = 480
@@ -22,7 +22,7 @@ GOAL = [[1, 2, 3],
 
 DIRS = [(-1, 0), (1, 0), (0, -1), (0, 1)]
 
-# ------------------ UTILITY FUNCTIONS ------------------
+# UTILITY FUNCTIONS
 
 def find_zero(state):
     for r in range(3):
@@ -35,15 +35,26 @@ def state_to_tuple(state):
 
 
 
+def dnc_solver(start):
+    full_path = [deepcopy(start)]
+    state = deepcopy(start)
+    subproblems = [
+        ([1, 2, 3], []),
+        ([4, 5, 6], [0]),
+        ([7, 8],    [0, 1]),
+    ]
+
+    for target_tiles, locked_rows in subproblems:
+        sub_path = bfs_to_partial_goal(state, target_tiles, locked_rows)
+        full_path.extend(sub_path[1:])
+        state = deepcopy(sub_path[-1])
+
+    return full_path
 
 
 
 
-
-
-
-
-# ------------------ GUI APPLICATION ------------------
+#GUI APPLICATION 
 
 class PuzzleApp:
     def __init__(self, root):
@@ -244,7 +255,7 @@ class PuzzleApp:
         else:
             self.phase_lbl.config(text="D&C: All 3 subproblems solved!")
 
-# ------------------ MAIN ------------------
+#MAIN
 
 if __name__ == "__main__":
     root = tk.Tk()
