@@ -1,3 +1,15 @@
+import tkinter as tk
+from tkinter import messagebox
+from PIL import Image, ImageTk
+import random
+import heapq
+import threading
+import os
+from copy import deepcopy
+
+# PATH 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 # CONSTANTS 
 TILE = 160
 BOARD_SIZE = 480
@@ -20,3 +32,15 @@ def neighbors(state):
             lst[i],lst[j]=lst[j],lst[i]
             res.append(tuple(lst))
     return res
+
+# HEURISTIC
+def h(state):
+    dist=0
+    for i,v in enumerate(state):
+        if v==0: continue
+        goal=v-1
+        r1,c1=divmod(i,3)
+        r2,c2=divmod(goal,3)
+        dist+=abs(r1-r2)+abs(c1-c2)
+    return dist
+
