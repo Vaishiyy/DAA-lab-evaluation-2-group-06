@@ -56,7 +56,35 @@ def astar(start, goal_check):
 
     return None  
 
+# Divide & Conquer Solver
+def dnc_solver(state):
 
+    if state == GOAL:
+        return [state]
+
+    path_total=[state]
+    current=state
+
+    # ---- DIVIDE → solve first row ----
+    if current[:3] != GOAL[:3]:
+
+        def row_goal(s):
+            return s[:3]==GOAL[:3]
+
+        path=astar(current,row_goal)
+        path_total+=path[1:]
+        current=path[-1]
+
+    # ---- CONQUER → solve remaining ----
+    def full_goal(s):
+        return s==GOAL
+
+    path=astar(current,full_goal)
+    path_total+=path[1:]
+
+    # ---- COMBINE ----
+    return path_total
+    
 # HEURISTIC
 def h(state):
     dist=0
